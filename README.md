@@ -48,3 +48,29 @@ npm run dev
 ## 라운드 사진 업로드
 
 관리자가 라운드를 만들면 **업로드 URL**이 표시됩니다. 해당 링크를 카톡 등으로 공유하면 비로그인으로 업로드할 수 있고, **관리자 → 사진 승인**에서 승인 후 공개 라운드 페이지에 노출됩니다.
+
+## 5. GitHub · Vercel 배포
+
+- **저장소:** GitHub에 푸시 후 Vercel에서 **Import** 하거나, Vercel CLI로 프로젝트를 연결합니다.
+- **프로덕션 URL 예:** 배포 후 Vercel이 부여하는 도메인(예: `https://프로젝트명.vercel.app`)과 커스텀 도메인을 설정할 수 있습니다.
+
+### Vercel 환경 변수 (필수)
+
+대시보드 **Project → Settings → Environment Variables**에 `.env.example`과 동일한 키를 **Production**(및 Preview 필요 시)에 넣습니다.
+
+| 변수 | 설명 |
+|------|------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase 프로젝트 URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` 또는 `NEXT_PUBLIC_SUPABASE_ANON_KEY` | 공개(브라우저) 키 |
+| `SUPABASE_SERVICE_ROLE_KEY` | 서버 전용 (절대 클라이언트에 노출 금지) |
+| `UPLOAD_TOKEN_PEPPER` | 라운드 업로드 토큰용 임의 긴 문자열 |
+| `NEXT_PUBLIC_CLUB_ID` | 단일 동호회면 `default` |
+
+선택: `DATABASE_URL`은 Vercel 런타임에서 `db:apply`에 쓰지 않으면 생략 가능.
+
+배포 후 **Supabase** → **Authentication → URL Configuration**에 다음을 추가합니다.
+
+- **Site URL:** `https://당신-도메인.vercel.app`
+- **Redirect URLs:** `https://당신-도메인.vercel.app/**`, 로컬용 `http://localhost:3000/**`
+
+환경 변수 저장 뒤 Vercel에서 **Redeploy** 하면 반영됩니다.
