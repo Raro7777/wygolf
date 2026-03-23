@@ -129,6 +129,47 @@ export async function deleteNotice(formData: FormData) {
   revalidatePath("/admin/notices");
 }
 
+export type PointEntryInput = {
+  league_member_id: string;
+  delta: number;
+  memo?: string;
+};
+
+/** 포인트 가감 이력 기록 + league_members.points 누적 (RPC apply_point_entries) */
+export async function applyPointEntries(entries: PointEntryInput[]) {
+  const { supabase } = await requireAdmin();
+  if (entries.length === 0) {
+    throw new Error("항목을 한 개 이상 입력하세요.");
+  }
+  if (entries.length > 80) {
+    throw new Error("한 번에 최대 80건까지 입력할 수 있습니다.");
+  }
+  const payload = entries.map((e) => ({
+    league_member_id: e.league_member_id,
+    delta: Math.trunc(Number(e.delta)),
+    memo: e.memo?.trim() ? e.memo.trim() : null,
+  }));
+  for (const e of payload) {
+    if (!e.league_member_id) {
+      throw new Error("모든 행에서 회원을 선택하세요.");
+    }
+    if (!Number.isFinite(e.delta) || e.delta === 0) {
+      throw new Error("포인트는 0이 아닌 정수여야 합니다.");
+    }
+  }
+
+  const { error } = await supabase.rpc("apply_point_entries", {
+    p_entries: payload,
+  });
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/");
+  revalidatePath("/rank");
+  revalidatePath("/handicap");
+  revalidatePath("/admin/points");
+  revalidatePath("/admin/handicap");
+}
+
 export type CreateRoundState =
   | { ok: false; error: string }
   | { ok: true; roundId: string; uploadToken: string }

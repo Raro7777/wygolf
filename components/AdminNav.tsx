@@ -5,6 +5,7 @@ const links = [
   { href: "/admin", label: "대시보드" },
   { href: "/admin/members", label: "회원 추가" },
   { href: "/admin/handicap", label: "핸디 편집" },
+  { href: "/admin/points", label: "포인트 입력" },
   { href: "/admin/rounds", label: "라운드" },
   { href: "/admin/notices", label: "공지" },
   { href: "/admin/photos", label: "사진 승인" },

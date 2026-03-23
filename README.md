@@ -7,7 +7,8 @@ Next.js + Supabase 동호회 웹앱 — 핸디 현황, 라운드, 공지, 사진
 1. [Supabase](https://supabase.com)에서 프로젝트를 만듭니다.
 2. SQL Editor에서 [`supabase/schema.sql`](supabase/schema.sql) 전체를 실행합니다.  
    스키마 하단 **7번 시드**에 여기리그·우리리그 명단(핸디 표)이 포함됩니다. 빈 DB로 시작하려면 해당 블록만 제외하고 실행하세요.  
-   (예전 DB에 `points` 컬럼만 없다면 [`supabase/migration_add_points.sql`](supabase/migration_add_points.sql)만 추가 실행.)
+   (예전 DB에 `points` 컬럼만 없다면 [`supabase/migration_add_points.sql`](supabase/migration_add_points.sql)만 추가 실행.)  
+   관리자 **포인트 입력** 이력이 없다면 [`supabase/migration_point_ledger.sql`](supabase/migration_point_ledger.sql)도 실행하세요.
 3. **Storage**에 버킷 `round-photos`가 생성되었는지 확인합니다.
 
 **또는** 로컬에서 DB에 직접 밀어 넣기: `.env`에 `DATABASE_URL`(대시보드 → Database → URI, 비밀번호 포함)을 넣은 뒤 `npm run db:apply` — `supabase/schema.sql` 전체가 실행됩니다. (Git에 `DATABASE_URL` 커밋 금지)
