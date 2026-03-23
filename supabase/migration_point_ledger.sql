@@ -19,8 +19,9 @@ create index if not exists point_ledger_league_member_idx
 alter table public.point_ledger enable row level security;
 
 drop policy if exists "point_ledger_select_admin" on public.point_ledger;
-create policy "point_ledger_select_admin" on public.point_ledger
-  for select using (public.is_admin());
+drop policy if exists "point_ledger_select_public" on public.point_ledger;
+create policy "point_ledger_select_public" on public.point_ledger
+  for select using (true);
 
 -- INSERT/UPDATE/DELETE 정책 없음 → 일반 클라이언트는 RPC 로만 기록
 

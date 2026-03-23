@@ -266,8 +266,9 @@ create policy "round_photos_admin" on public.round_photos
   for all using (public.is_admin()) with check (public.is_admin());
 
 drop policy if exists "point_ledger_select_admin" on public.point_ledger;
-create policy "point_ledger_select_admin" on public.point_ledger
-  for select using (public.is_admin());
+drop policy if exists "point_ledger_select_public" on public.point_ledger;
+create policy "point_ledger_select_public" on public.point_ledger
+  for select using (true);
 
 -- -----------------------------------------------------------------------------
 -- 5. Storage 버킷
