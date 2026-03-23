@@ -23,8 +23,18 @@ Next.js + Supabase 동호회 웹앱 — 핸디 현황, 라운드, 공지, 사진
 
 ## 3. 관리자 계정
 
-1. Supabase **Authentication → Users**에서 관리자 이메일로 사용자를 추가합니다.
-2. 해당 사용자의 UUID를 확인한 뒤, SQL Editor에서 아래를 실행합니다 (`YOUR_USER_UUID`, 표시 이름은 원하는 대로).
+### 빠른 테스트 관리자
+
+1. Supabase **Authentication → Users → Add user**  
+   - Email: `test-admin@wygolf.local`  
+   - 비밀번호 임의, **Auto Confirm User** 켜기  
+2. SQL Editor에서 [`supabase/seed_test_admin.sql`](supabase/seed_test_admin.sql) 전체 실행  
+3. 앱에서 `/login` → 위 이메일·비밀번호로 로그인 후 `/admin` 접속  
+
+### 일반(수동 UUID)
+
+1. **Authentication → Users**에서 사용자 추가 후 UUID 복사  
+2. SQL Editor:
 
 ```sql
 insert into public.profiles (club_id, display_name, role, auth_user_id)
